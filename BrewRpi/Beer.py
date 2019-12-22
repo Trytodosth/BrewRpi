@@ -51,17 +51,32 @@ class Beer(object):
             print(step)
         return [s for s in self.brewing_steps if s.type == Step_types(typ)]
 
+
+    ########## STARTING BREWING
+
+    def start_substep(self, ind_step, ind_substep, force=False):
+        """Implementation to match the need for step=<step>&ind=<ind>"""
+        this_step = [(i, s) for (i, s) in enumerate(self.brewing_steps) if s.type == Step_types(ind_step)]
+        if ind_substep >= 0 and ind_substep < len(this_step):
+            return self.start_step(this_step[ind_substep])
+        else:
+            return self.start_step(-1)
+
     def start_step(self, ind, force=False):
         if self.is_brewing and not force:
-            return 'Some beer is already being brewed'
+            return False, 'Some beer is already being brewed'
 
         if ind < 0 or ind >= len(self.brewing_steps):
-            return 'Invalid step identifaction. Asked %i but %i steps only!' %  (ind, len(self.brewing_steps))
+            return False, 'Invalid step identifaction. Asked %i but %i steps only!' %  (ind, len(self.brewing_steps))
 
         # New step!
         self.is_brewing = True
         self.current_step = ind
         self.step_start = datetime.datetime.now()
+        return True, 'It\'s started!'
+
+    
+    ########## INFO ON RUNNING BREW
 
     def get_running_info(self):
         if self.is_brewing:

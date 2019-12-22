@@ -97,7 +97,9 @@
             <h2>Etapes de d'empâtage pour cette recette</h2>
             <ol>
                 {% for step in myBeer.list_substeps(1) %}
-                <li>{{ step }}</li>
+                <li>{{ step }}
+                {% myBeer.is_brewing %}
+                    <a href="start/step=1&ind={{ loop.index }}" class="w3-button w3-teal w3-small">Start</a></li>
                 {% endfor %}
             </ol>
         </div>

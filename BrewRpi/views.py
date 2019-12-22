@@ -45,3 +45,20 @@ def page_mashing():
 
     return render_template('mashing.html',
         myBeer=myBeer, IP = BrewRpi.Server.get_ip(), updatetime=BrewRpi.Server.get_time())
+
+
+
+
+@app.route("/start/step=<step>&ind=<ind>")
+def start_brewing():
+    """Attempt at starting a new brewing step."""
+    global myBeer
+    
+    was_started, mess = myBeer.start_step(ind)
+    if was_started:
+        return redirect(url_for('/'))
+
+    return render_template('mashing.html',
+        myBeer=myBeer, IP = BrewRpi.Server.get_ip(), updatetime=BrewRpi.Server.get_time())
+
+    return redirect(url_for('/'))
