@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>e6840b87-56f9-446d-bcfb-9c6cc21cdd08</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{789894c7-04a9-4a11-a6b5-3f4435165112};{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>runserver.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Web launcher</LaunchProvider>
+    <WebBrowserUrl>http://localhost</WebBrowserUrl>
+    <OutputPath>.</OutputPath>
+    <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
+    <Name>BrewRpi</Name>
+    <RootNamespace>BrewRpi</RootNamespace>
+    <InterpreterId>MSBuild|PyPy|$(MSBuildProjectFullPath)</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BrewRpi\Auxiliary.py" />
+    <Compile Include="BrewRpi\Beer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BrewRpi\OldBeer.py" />
+    <Compile Include="BrewRpi\BrewSQL.py" />
+    <Compile Include="BrewRpi\Brew_step.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BrewRpi\relay.py" />
+    <Compile Include="BrewRpi\Server.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="runserver.py" />
+    <Compile Include="BrewRpi\__init__.py" />
+    <Compile Include="BrewRpi\views.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BrewRpi\" />
+    <Folder Include="BrewRpi\static\" />
+    <Folder Include="BrewRpi\static\content\" />
+    <Folder Include="BrewRpi\static\fonts\" />
+    <Folder Include="BrewRpi\static\images\" />
+    <Folder Include="BrewRpi\static\scripts\" />
+    <Folder Include="BrewRpi\templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BrewRpi\static\images\Beer_icon.png" />
+    <Content Include="BrewRpi\templates\brewery.html" />
+    <Content Include="BrewRpi\templates\history.html" />
+    <Content Include="BrewRpi\templates\mashing.html" />
+    <Content Include="requirements.txt" />
+    <Content Include="BrewRpi\static\content\bootstrap.css" />
+    <Content Include="BrewRpi\static\content\bootstrap.min.css" />
+    <Content Include="BrewRpi\static\content\site.css" />
+    <Content Include="BrewRpi\static\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="BrewRpi\static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="BrewRpi\static\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="BrewRpi\static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="BrewRpi\static\scripts\bootstrap.js" />
+    <Content Include="BrewRpi\static\scripts\bootstrap.min.js" />
+    <Content Include="BrewRpi\static\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="BrewRpi\static\scripts\jquery-1.10.2.js" />
+    <Content Include="BrewRpi\static\scripts\jquery-1.10.2.min.js" />
+    <Content Include="BrewRpi\static\scripts\jquery-1.10.2.min.map" />
+    <Content Include="BrewRpi\static\scripts\jquery.validate-vsdoc.js" />
+    <Content Include="BrewRpi\static\scripts\jquery.validate.js" />
+    <Content Include="BrewRpi\static\scripts\jquery.validate.min.js" />
+    <Content Include="BrewRpi\static\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="BrewRpi\static\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="BrewRpi\static\scripts\modernizr-2.6.2.js" />
+    <Content Include="BrewRpi\static\scripts\respond.js" />
+    <Content Include="BrewRpi\static\scripts\respond.min.js" />
+    <Content Include="BrewRpi\static\scripts\_references.js" />
+    <Content Include="BrewRpi\templates\about.html" />
+    <Content Include="BrewRpi\templates\contact.html" />
+    <Content Include="BrewRpi\templates\index.html" />
+    <Content Include="BrewRpi\templates\layout.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="PyPy\">
+      <Id>PyPy</Id>
+      <Version>3.7</Version>
+      <Description>PyPy (Python 3.7 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

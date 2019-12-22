@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<title>BreweryPy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<style>
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        padding: 12px;
+        margin: 5px 1% 5px 1%;
+        width: 18%;
+        min-width: 150px;
+        w3-topbar;
+    }
+
+        .card .last {
+            margin: 5px 0px 5px 0px;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+    .floater {
+        display: block;
+        float: left;
+    }
+
+    .container {
+        padding: 2px 16px;
+    }
+
+    .beerCard {
+        margin: 6px 24px 6px 0px;
+    }
+
+    /* Use a media query to add a breakpoint at 400px: */
+    @media screen and (max-width: 400px) {
+        .card {
+            width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+        }
+    }
+</style>
+<body>
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+        <a href="/" class="w3-bar-item w3-button"><i class="material-icons w3-xxlarge">home</i></a>
+        <a href="history" class="w3-bar-item w3-button"><i class="material-icons w3-xxlarge">show_chart</i></a>
+        <a href="ingredients" class="w3-bar-item w3-button"><i class="material-icons w3-xxlarge">spa</i></a>
+        <a href="brewing" class="w3-bar-item w3-button"><i class="material-icons w3-xxlarge">whatshot</i></a>
+        <a href="recipes" class="w3-bar-item w3-button"><i class="fa fa-beer"></i></a>
+    </div>
+
+    <div class="w3-container" style="margin-left:70px">
+        {% if myBeer.relay_status %}
+        <a href="history" class="w3-display-topright w3-button w3-red">Current status: {{'%0.1f'|format(myBeer.current_temperature)}}°C | {% if myBeer.relay_status %}On{% else %}Off{% endif %}</a>
+        {% else %}
+        <a href="history" class="w3-display-topright w3-button w3-lime">Current status: {{'%0.1f'|format(myBeer.current_temperature)}}°C | {% if myBeer.relay_status %}On{% else %}Off{% endif %}</a>
+        {% endif %}
+
+        <div class="w3-panel w3-card w3-stretch">
+            <div><img width="200" class="w3-circle w3-card floater beerCard" alt="Beer" src="/static/images/Beer_icon.png"></div>
+            <div style="display:flex; flex-direction: row; align-items:center">
+                <h2 style="margin-right:20px">Lager IPA</h2>
+                <a href="recipes" class="w3-bar-item w3-button w3-sand w3-text-gray w3-small"><i class="fa fa-refresh"></i><span class="w3-small">  Change beer</span></a>
+            </div>
+            <p><i>This beer is a Lager blond beer with lemon notes</i></p>
+            <p>
+                Brewery status:<br />
+                {% if not myBeer.is_brewing %}
+                Check categories below to start brewing!
+                {% else %}
+                {{ myBeer.get_running_info() }}<br />
+                {{ myBeer.get_progress() }}
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="card floater w3-center w3-topbar w3-border-white w3-hover-border-teal">
+            <h2>Preheating</h2>
+            <p>{{ myBeer.get_info_step(0) }}</p>
+            <div class="w3-bar">
+                <a href="preheating" class="w3-button w3-teal">Jump</a>
+            </div>
+        </div>
+        <div class="card floater w3-center w3-topbar w3-border-white w3-hover-border-teal">
+            <h2>Mashing</h2>
+            <p>{{ myBeer.get_info_step(1) }}</p>
+            <div class="w3-bar">
+                <a href="mashing" class="w3-button w3-teal">Jump</a>
+            </div>
+        </div>
+        <div class="card floater w3-center w3-topbar w3-border-white w3-hover-border-teal">
+            <h2>Boiling</h2>
+            <p>{{ myBeer.get_info_step(2) }}</p>
+            <div class="w3-bar">
+                <button class="w3-button w3-teal">Jump</button>
+            </div>
+        </div>
+        <div class="card floater w3-center w3-topbar w3-border-white w3-hover-border-teal">
+            <h2>Aromation</h2>
+            <p>{{ myBeer.get_info_step(3) }}</p>
+            <div class="w3-bar">
+                <button class="w3-button w3-teal">Jump</button>
+            </div>
+        </div>
+        <div class="card floater w3-center w3-topbar w3-border-white w3-hover-border-teal last">
+            <h2>Cooling</h2>
+            <p>{{ myBeer.get_info_step(4) }}</p>
+            <div class="w3-bar">
+                <button class="w3-button w3-teal">Jump</button>
+            </div>
+        </div>
+    </div>
+    <div class="w3-panel w3-blue w3-card-2 w3-center">
+        <p>
+            Last updated on {{ updatetime }}.
+            IP address: {{ IP }}
+        </p>
+    </div>
+</body>
+<!-- JS to open and close sidebar with overlay effect -->
+<script>
+    function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("myOverlay").style.display = "block";
+    }
+
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("myOverlay").style.display = "none";
+    }
+</script>
+</html>
