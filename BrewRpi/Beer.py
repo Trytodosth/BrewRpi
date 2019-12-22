@@ -17,16 +17,9 @@ class Beer(object):
         self.step_start = datetime.datetime.now()
             
         
-    def get_info_step(self, typ):
-        print(len(self.brewing_steps))
-        print([s.type for s in self.brewing_steps])
+    def get_info_step(self, typ):        
         relevant = [s for s in self.brewing_steps if s.type == Step_types(typ)]
-        print(relevant)
-        
-        for step in self.brewing_steps:
-            print(step.type)
-            print(step)
-            
+
         if not relevant:
             return 'Not necessary for this beer!'
         
@@ -47,8 +40,6 @@ class Beer(object):
         return steps
             
     def list_substeps(self, typ):
-        for step in self.brewing_steps:
-            print(step)
         return [s for s in self.brewing_steps if s.type == Step_types(typ)]
 
 
@@ -63,17 +54,27 @@ class Beer(object):
             return self.start_step(-1)
 
     def start_step(self, ind, force=False):
+        """Implementation to match the need for the global index"""
         if self.is_brewing and not force:
             return False, 'Some beer is already being brewed'
 
         if ind < 0 or ind >= len(self.brewing_steps):
-            return False, 'Invalid step identifaction. Asked %i but %i steps only!' %  (ind, len(self.brewing_steps))
+            return False, 'Invalid step identifaction. Asked %i but %i steps only!' % (ind, len(self.brewing_steps))
 
         # New step!
         self.is_brewing = True
         self.current_step = ind
         self.step_start = datetime.datetime.now()
         return True, 'It\'s started!'
+
+    def refresh(self, stop=False):
+        """Refresh the actual state of the brewing (relay and time)"""
+
+        if stop or not self.is_brewing or not self.current_brew_step():
+            self.relay_status = False
+        else:
+            self.relay_status = self.current_temperature < self.current_brew_step().target_temp
+
 
     
     ########## INFO ON RUNNING BREW
@@ -84,33 +85,34 @@ class Beer(object):
         else:
             return 'Well, ready to brew when you are!'
         
-    def current_brew_step(self):    
-        if ind < 0 or ind >= len(self.brewing_steps):
-            return self.brewing_steps[self.current_step]
-        else:
+    def current_brew_step(self) -> (Brew_step):    
+        if self.current_step < 0 or self.current_step >= len(self.brewing_steps):
             return None
+        else:
+            return self.brewing_steps[self.current_step]
 
     def get_progress(self):
-        if not self.is_brewing:
+        if not self.is_brewing or not self.current_brew_step():
             return 'Either we finished, or we never started!'
         
-        relevant = [s for s in self.brewing_steps if s.type == Step_types(typ)]
+        relevant = [s for s in self.brewing_steps if s.type == self.current_brew_step().type]
 
-        end_time = self.step_start+self.current_step()
+        end_time = self.step_start+datetime.timedelta(minutes=self.current_brew_step().duration)
         remaining = end_time - datetime.datetime.now()
 
-        if remaining < 0:
+        if remaining.total_seconds() < 0:
+            self.refresh(stop=True)
             return 'The step should have been finished %0.1f minutes ago!' % (-remaining.second/60.0)
 
         if len(relevant) == 1:
-            return '%s will be finished at %s' % (Step_types(typ).name, end_time.strftime("%H:%M"))
+            return '%s will be finished at %s' % (self.current_brew_step().type.name, end_time.strftime("%H:%M"))
 
-        next = [s for (i, s) in enumerate(self.brewing_steps) if s.type == Step_types(typ) and i > self.current_step]
+        next = [s for (i, s) in enumerate(self.brewing_steps) if s.type == self.current_brew_step().type and i > self.current_step]
 
         if len(next) > 0:
-            return 'This step will be finished at %s. %i more to go to finish %s' % (end_time.strftime("%H:%M"), len(next), Step_types(typ).name)
+            return 'This step will be finished at %s. %i more to go to finish %s' % (end_time.strftime("%H:%M"), len(next), self.current_brew_step().type.name)
 
-        return '%s will be finished at %s' % (Step_types(typ).name, end_time.strftime("%H:%M"))
+        return '%s will be finished at %s' % (self.current_brew_step().type.name, end_time.strftime("%H:%M"))
 
 
 

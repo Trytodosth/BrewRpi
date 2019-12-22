@@ -56,7 +56,11 @@
 
     <div class="w3-container" style="margin-left:70px">
         {% if myBeer.relay_status %}
-        <a href="history" class="w3-display-topright w3-button w3-red">Current status: {{'%0.1f'|format(myBeer.current_temperature)}}°C | {% if myBeer.relay_status %}On{% else %}Off{% endif %}</a>
+        <a href="history" class="w3-display-topright w3-button w3-red">
+            Current status: {{'%0.1f'|format(myBeer.current_temperature)}}°C
+            {% if myBeer.is_brewing %}/ {{'%0.1f'|format(myBeer.current_brew_step().target_temp)}}°C{% endif %}
+            | {% if myBeer.relay_status %}On{% else %}Off{% endif %}
+        </a>
         {% else %}
         <a href="history" class="w3-display-topright w3-button w3-lime">Current status: {{'%0.1f'|format(myBeer.current_temperature)}}°C | {% if myBeer.relay_status %}On{% else %}Off{% endif %}</a>
         {% endif %}

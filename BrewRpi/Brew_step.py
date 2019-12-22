@@ -31,11 +31,11 @@ class Brew_step(object):
     
     def __str__(self):
         if self.must_heat():
-            return 'Step %s: %0.1f°C during %imin' % (self.name, self.target_temp, self.duration)
+            return '%s: %0.1f°C during %imin' % (self.name, self.target_temp, self.duration)
         elif self.must_wait():
-            return 'Step %s: Waiting to reach %0.1f°C' % (self.name, self.target_temp)
+            return '%s: Waiting to reach %0.1f°C' % (self.name, self.target_temp)
         else:
-            return 'Step %s: Waiting to reach %0.1f°C' % (self.name, self.target_temp)
+            return '%s: Waiting to reach %0.1f°C' % (self.name, self.target_temp)
 
         
 class Step_types(Enum):

@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 #
 #  brewSQL.py
-#  
+#
 #  This script can create SQLite3 DB
 import sqlite3
-import sys, os, datetime, time
+import sys
+import os
+import datetime
+import time
 from dateutil import tz
 
 # Timezones conversion because SQL uses UTC
@@ -15,8 +18,8 @@ LOCAL_TIMEZONE = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinf
 # Default database
 DBfolder = 'Databases'
 DBdefault = 'CurrentBatch.db'
-conn=sqlite3.connect(os.path.join(DBfolder, DBdefault))
-curs=conn.cursor()
+conn = sqlite3.connect(os.path.join(DBfolder, DBdefault))
+curs = conn.cursor()
 
 
 def createDB(args):
@@ -34,7 +37,7 @@ def createDB(args):
             cur.execute("CREATE TABLE Sensor_Data(timestamp DATETIME, currTemp NUMERIC, targetTemp NUMERIC, relayState NUMERIC)")
             cur.execute("DROP TABLE IF EXISTS TargetTemp_Data")
             cur.execute("CREATE TABLE TargetTemp_Data(timestamp DATETIME, targetTemp NUMERIC)")
-        print(DBname+' database successfully reset')
+        print(DBname + ' database successfully reset')
 
 
 def insertSensorData(currTemp, targetTemp, relayState):
@@ -57,7 +60,7 @@ def getHistData(numSamples):
     con = sqlite3.connect(os.path.join(DBfolder, DBdefault))
     with con: 
         cur = con.cursor() 
-        cur.execute("SELECT * FROM Sensor_Data ORDER BY timestamp DESC LIMIT "+str(numSamples))
+        cur.execute("SELECT * FROM Sensor_Data ORDER BY timestamp DESC LIMIT " + str(numSamples))
         data = cur.fetchall()
         dates = []
         measures = []
@@ -70,7 +73,7 @@ def getHistData(numSamples):
    
 def maxRowsTable():
 	for row in curs.execute("select COUNT(temp) from  Sensor_Data"):
-		maxNumberRows=row[0]
+		maxNumberRows = row[0]
 	return maxNumberRows
     
     

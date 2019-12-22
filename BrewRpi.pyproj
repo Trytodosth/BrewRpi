@@ -17,7 +17,8 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>BrewRpi</Name>
     <RootNamespace>BrewRpi</RootNamespace>
-    <InterpreterId>MSBuild|PyPy|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,7 +60,6 @@
     <Content Include="BrewRpi\templates\brewery.html" />
     <Content Include="BrewRpi\templates\history.html" />
     <Content Include="BrewRpi\templates\mashing.html" />
-    <Content Include="requirements.txt" />
     <Content Include="BrewRpi\static\content\bootstrap.css" />
     <Content Include="BrewRpi\static\content\bootstrap.min.css" />
     <Content Include="BrewRpi\static\content\site.css" />
@@ -86,17 +86,7 @@
     <Content Include="BrewRpi\templates\contact.html" />
     <Content Include="BrewRpi\templates\index.html" />
     <Content Include="BrewRpi\templates\layout.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Interpreter Include="PyPy\">
-      <Id>PyPy</Id>
-      <Version>3.7</Version>
-      <Description>PyPy (Python 3.7 (64-bit))</Description>
-      <InterpreterPath>Scripts\python.exe</InterpreterPath>
-      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
-      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
-      <Architecture>X64</Architecture>
-    </Interpreter>
+    <Content Include="requirements.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

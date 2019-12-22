@@ -3,7 +3,7 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template
+from flask import render_template, redirect, url_for
 from BrewRpi import app
 from BrewRpi.Beer import *
 import BrewRpi.Server
@@ -17,6 +17,9 @@ myBeer = Beer()
 def home():
     """Renders the home page."""
     global myBeer
+
+    myBeer.refresh()
+
     return render_template('brewery.html',
         myBeer=myBeer, IP = BrewRpi.Server.get_ip(), updatetime=BrewRpi.Server.get_time())
 
@@ -49,16 +52,13 @@ def page_mashing():
 
 
 
-@app.route("/start/step=<step>&ind=<ind>")
-def start_brewing():
+@app.route("/start/step=<int:step>&ind=<int:ind>")
+def start_brewing(step, ind):
     """Attempt at starting a new brewing step."""
     global myBeer
     
-    was_started, mess = myBeer.start_step(ind)
+    was_started, mess = myBeer.start_step(step, ind)
     if was_started:
-        return redirect(url_for('/'))
-
-    return render_template('mashing.html',
-        myBeer=myBeer, IP = BrewRpi.Server.get_ip(), updatetime=BrewRpi.Server.get_time())
-
-    return redirect(url_for('/'))
+        return redirect(url_for('home'))
+    else:
+        return mess
